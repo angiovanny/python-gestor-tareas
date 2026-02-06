@@ -10,6 +10,9 @@ FILENAME = os.path.join(BASE_DIR, "tareas.txt")
 def inicializar_archivo():
     """
     Crea el archivo de tareas si no existe
+
+    Example:
+        >>> inicializar_archivo()
     """
     if not os.path.exists(FILENAME):
         open(FILENAME, "w").close()
@@ -19,8 +22,11 @@ def cargar_tareas() -> list:
     """
     Carga tareas desde archivo
 
-    Retorno:
-        f.readlines() (list): Lista de tareas 
+    Returns:
+        (list): Lista de tareas 
+
+    Example:
+        >>> cargar_tareas()
     """
     with open(FILENAME, "r") as f:
         return f.readlines()
@@ -30,8 +36,11 @@ def guardar_tareas(tareas: list):
     """
     Guarda todas las tareas en archivo
 
-    Atributos:
+    Args:
         tareas (list): Lista de tareas
+
+    Example:
+        >>> guardar_tareas(["Leer libro", "Hacer ejercicio"])
     """
     with open(FILENAME, "w") as f:
         f.writelines(tareas)
@@ -47,43 +56,65 @@ def mostrar_menu():
 
 def ver_tareas(tareas: list):
     """
-    Muestra lista de tareas
+    Formatea lista de tareas para mostrar
     
-    Atributos:
+    Args:
         tareas (str): Lista de tareas
+
+    Returns:
+        String formateado con las tareas
+
+    Example:
+        >>> ver_tareas(["Leer libro", "Hacer ejercicio"])
     """
     if not tareas:
-        print("\nNo hay tareas registradas.\n")
-        return
+        return "\nNo hay tareas registradas.\n"
 
-    print("\nTareas:\n")
+    resultado = "\nTareas:\n"
 
     for i, tarea in enumerate(tareas, start=1):
-        print(f"{i}. {tarea.strip()}")
+        resultado += f"{i}. {tarea.strip()}\n"
 
-
-def agregar_tarea():
+    return resultado
+        
+def agregar_tarea() -> str:
     """
     Agrega tarea a archivo
+
+    Returns:
+        (str): String formateado con resultado
+
+    Example:
+        >>> agregar_tarea()
     """
     tarea = input("Escribe la tarea: ").strip()
 
     if not tarea:
-        print("La tarea no puede estar vacía.")
-        return
+        return "La tarea no puede estar vacía."
 
     with open(FILENAME, "a") as f:
         f.write(tarea + "\n")
 
-    print("Tarea agregada correctamente.")
+    return "Tarea agregada correctamente."
 
 
-def eliminar_tarea(tareas: list):
+def eliminar_tarea(tareas: list) -> str:
+    """
+    Elimina tareas de lista
+
+    Args:
+        tareas (str): Lista de tareas
+
+    Returns:
+        (str): String formateado con resultado
+
+    Example:
+        >>> eliminar_tareas(["Leer libro", "Hacer ejercicio"])
+    """
     if not tareas:
-        print("No hay tareas para eliminar.")
-        return
+        return "No hay tareas para eliminar."
 
-    ver_tareas(tareas)
+    print(ver_tareas(tareas))
 
     try:
         num = int(input("Número de tarea a eliminar: "))
@@ -91,12 +122,12 @@ def eliminar_tarea(tareas: list):
         if 1 <= num <= len(tareas):
             tareas.pop(num - 1)
             guardar_tareas(tareas)
-            print("Tarea eliminada.")
+            return "Tarea eliminada."
         else:
-            print("Número fuera de rango.")
+            return "Número fuera de rango."
 
     except ValueError:
-        print("Debes ingresar un número válido.")
+        return "Debes ingresar un número válido."
 
 
 def main():
@@ -111,13 +142,13 @@ def main():
 
         match opcion:
             case "1":
-                ver_tareas(tareas)
+                print(ver_tareas(tareas))
 
             case "2":
-                agregar_tarea()
+                print(agregar_tarea())
 
             case "3":
-                eliminar_tarea(tareas)
+                print(eliminar_tarea(tareas))
 
             case "4":
                 print("\nHasta luego 👋")
