@@ -6,8 +6,9 @@ import os
 BASE_DIR = os.path.dirname(__file__)
 FILENAME = os.path.join(BASE_DIR, "tareas.txt")
 from context import managed_file
+from decorators import log_execution
 
-
+@log_execution
 def inicializar_archivo():
     """
     Crea el archivo de tareas si no existe
@@ -18,7 +19,7 @@ def inicializar_archivo():
     if not os.path.exists(FILENAME):
         managed_file(FILENAME, "w").close()
 
-
+@log_execution
 def cargar_tareas() -> list:
     """
     Carga tareas desde archivo
@@ -32,7 +33,7 @@ def cargar_tareas() -> list:
     with managed_file(FILENAME, "r") as f:
         return f.readlines()
 
-
+@log_execution
 def guardar_tareas(tareas: list):
     """
     Guarda todas las tareas en archivo
@@ -46,7 +47,6 @@ def guardar_tareas(tareas: list):
     with managed_file(FILENAME, "w") as f:
         f.writelines(tareas)
 
-
 def mostrar_menu():
     print("\n=== GESTOR DE TAREAS ===\n")
     print("1. Ver tareas")
@@ -54,7 +54,7 @@ def mostrar_menu():
     print("3. Eliminar tarea")
     print("4. Salir")
 
-
+@log_execution
 def ver_tareas(tareas: list) -> str:
     """
     Formatea lista de tareas para mostrar
@@ -78,6 +78,7 @@ def ver_tareas(tareas: list) -> str:
 
     return resultado
         
+@log_execution
 def agregar_tarea() -> str:
     """
     Agrega tarea a archivo
@@ -98,7 +99,7 @@ def agregar_tarea() -> str:
 
     return "Tarea agregada correctamente."
 
-
+@log_execution
 def eliminar_tarea(tareas: list) -> str:
     """
     Elimina tareas de lista

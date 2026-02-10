@@ -3,7 +3,7 @@ from gestor.tareas import ver_tareas, agregar_tarea, eliminar_tarea
 def test_ver_tareas_vacia():
     assert ver_tareas([]) == "\nNo hay tareas registradas.\n"
 
-def test_ver_tareas_una():
+def test_ver_tareas_una_tarea():
     assert ver_tareas(["Leer un libro"]) == "\nTareas:\n1. Leer un libro\n"
 
 def test_ver_tareas_varias():
@@ -33,7 +33,9 @@ def test_agregar_tarea_valida(monkeypatch, tmp_path):
     
     assert "Estudiar Python\n" in lineas
 
-def test_agregar_tarea_vacia(monkeypatch):
+def test_agregar_tarea_vacia(monkeypatch, tmp_path):
+    archivo = tmp_path / "tareas.txt"
+    monkeypatch.setattr("gestor.tareas.FILENAME", archivo)
     monkeypatch.setattr(
         "builtins.input",
         lambda _: ""
