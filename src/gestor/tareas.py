@@ -5,6 +5,7 @@ import os
 # Ruta portable
 BASE_DIR = os.path.dirname(__file__)
 FILENAME = os.path.join(BASE_DIR, "tareas.txt")
+from context import managed_file
 
 
 def inicializar_archivo():
@@ -15,7 +16,7 @@ def inicializar_archivo():
         >>> inicializar_archivo()
     """
     if not os.path.exists(FILENAME):
-        open(FILENAME, "w").close()
+        managed_file(FILENAME, "w").close()
 
 
 def cargar_tareas() -> list:
@@ -28,7 +29,7 @@ def cargar_tareas() -> list:
     Example:
         >>> cargar_tareas()
     """
-    with open(FILENAME, "r") as f:
+    with managed_file(FILENAME, "r") as f:
         return f.readlines()
 
 
@@ -42,7 +43,7 @@ def guardar_tareas(tareas: list):
     Example:
         >>> guardar_tareas(["Leer libro", "Hacer ejercicio"])
     """
-    with open(FILENAME, "w") as f:
+    with managed_file(FILENAME, "w") as f:
         f.writelines(tareas)
 
 
@@ -92,7 +93,7 @@ def agregar_tarea() -> str:
     if not tarea:
         return "La tarea no puede estar vacía."
 
-    with open(FILENAME, "a") as f:
+    with managed_file(FILENAME, "a") as f:
         f.write(tarea + "\n")
 
     return "Tarea agregada correctamente."
