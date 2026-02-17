@@ -5,8 +5,8 @@ import os
 # Ruta portable
 BASE_DIR = os.path.dirname(__file__)
 FILENAME = os.path.join(BASE_DIR, "tareas.txt")
-from context import managed_file
-from decorators import log_execution
+from gestor.context import managed_file
+from gestor.decorators import log_execution
 
 @log_execution
 def inicializar_archivo():
